@@ -33,35 +33,35 @@ public class Book {
     public Book(){}
 
     //Getterit ja Setterit
-    public String getTitle(String title){
+    public String getTitle(){
         return title;
     }
     public void setTitle(String title){
         this.title = title;
     }
 
-    public String getAuthor(String author){
+    public String getAuthor(){
         return author;
     }
     public void setAuthor(String author){
         this.author = author;
     }
 
-    public int getPublicationYear(int publicationYear){
+    public int getPublicationYear(){
         return publicationYear;
     }
     public void setPublicationYear(int publicationYear){
         this.publicationYear = publicationYear;
     }
 
-    public String getIsbn(String isbn){
+    public String getIsbn(){
         return isbn;
     }
     public void setIsbn(String isbn){
         this.isbn = isbn;
     }
 
-    public BigDecimal getPrice(BigDecimal price){
+    public BigDecimal getPrice(){
         return price;
     }
     public void setPrice(BigDecimal price){
