@@ -33,6 +33,10 @@ public class Book {
     public Book(){}
 
     //Getterit ja Setterit
+    public Long getId(){
+        return id;
+    }
+
     public String getTitle(){
         return title;
     }
