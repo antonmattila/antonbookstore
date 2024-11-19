@@ -9,10 +9,6 @@ import antonbookstore.antonbookstore.Models.*;
 import java.util.List;
 
 import antonbookstore.antonbookstore.repository.BookRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class BookController {
@@ -48,4 +44,19 @@ public class BookController {
         return "redirect:/booklist";
     }
 
+    @GetMapping("/editbook/{id}")
+    public String showEditBookForm(@PathVariable Long id, Model model) {
+        Book book = bookRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Bad book id " + id));
+        model.addAttribute("book", book);
+        return "editbook";
+    }
+
+    @PostMapping("/editbook")
+    public String editbook(@ModelAttribute Book book) {
+        bookRepository.save(book);
+        return "redirect:/booklist";
+    }
+    
+    
 }
