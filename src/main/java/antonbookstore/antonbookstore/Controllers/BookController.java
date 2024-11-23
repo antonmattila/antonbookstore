@@ -9,6 +9,7 @@ import antonbookstore.antonbookstore.Models.*;
 import java.util.List;
 
 import antonbookstore.antonbookstore.repository.BookRepository;
+import antonbookstore.antonbookstore.repository.CategoryRepository;
 
 @Controller
 public class BookController {
@@ -20,6 +21,8 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired CategoryRepository categoryRepository;
+
     @GetMapping("/booklist")
     public String showBookList(Model model) {
         model.addAttribute("books", bookRepository.findAll());
@@ -29,6 +32,7 @@ public class BookController {
     @GetMapping("/addbook")
     public String showAddBookForm(Model model) {
         model.addAttribute("book", new Book());
+        model.addAttribute("categories", categoryRepository.findAll());
         return "addbook";
     }
 
@@ -49,25 +53,30 @@ public class BookController {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Bad book id " + id));
         model.addAttribute("book", book);
+
+        model.addAttribute("categories", categoryRepository.findAll());
         return "editbook";
     }
 
     @PostMapping("/editbook/{id}")
-    public String editbook(@PathVariable Long id, @ModelAttribute Book book) {
-        System.out.println("Saving book with ID: " + book.getId());
+public String editBook(@PathVariable Long id, @ModelAttribute Book book) {
+    Book existingBook = bookRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Book not found"));
 
-        Book existingBook = bookRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Book not found"));
+    existingBook.setTitle(book.getTitle());
+    existingBook.setAuthor(book.getAuthor());
+    existingBook.setPublicationYear(book.getPublicationYear());
+    existingBook.setIsbn(book.getIsbn());
+    existingBook.setPrice(book.getPrice());
 
-        existingBook.setTitle(book.getTitle());
-        existingBook.setAuthor(book.getAuthor());
-        existingBook.setPublicationYear(book.getPublicationYear());
-        existingBook.setIsbn(book.getIsbn());
-        existingBook.setPrice(book.getPrice());
+    Category selectedCategory = categoryRepository.findById(book.getCategory().getId())
+            .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+    existingBook.setCategory(selectedCategory);
 
-        bookRepository.save(existingBook);
+    bookRepository.save(existingBook);
 
-        return "redirect:/booklist";
-    }
+    return "redirect:/booklist";
+}
+
 
 }

@@ -2,11 +2,9 @@ package antonbookstore.antonbookstore.Models;
 
 import java.math.BigDecimal;
 
-import org.hibernate.annotations.DialectOverride.GeneratedColumns;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
-import jakarta.persistence.Id;
 
 
 @Entity
@@ -21,13 +19,18 @@ public class Book {
     private String isbn;
     private BigDecimal price;
 
+    @ManyToOne
+    @JoinColumn(name= "category_id")
+    private Category category;
+
     //Konstruktori
-    public Book(String title, String author, int publicationYear, String isbn, BigDecimal price) {
+    public Book(String title, String author, int publicationYear, String isbn, BigDecimal price, Category category) {
         this.title = title;
         this.author = author;
         this.publicationYear = publicationYear;
         this.isbn = isbn;
         this.price = price;
+        this.category = category;
     }
     //Tyhjä konstruktori
     public Book(){}
@@ -70,5 +73,12 @@ public class Book {
     }
     public void setPrice(BigDecimal price){
         this.price = price;
+    }
+
+    public Category getCategory(){
+        return category;
+    }
+    public void setCategory(Category category){
+        this.category = category;
     }
 }
