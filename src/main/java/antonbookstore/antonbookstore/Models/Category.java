@@ -1,7 +1,11 @@
 package antonbookstore.antonbookstore.Models;
 
 import jakarta.persistence.*;
-import java.util.List;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Category {
@@ -13,8 +17,9 @@ public class Category {
     private String name;
 
     //Linkit
-    @OneToMany(mappedBy = "category")
-    private List<Book> books;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<Book> books = new HashSet<>();
 
     //Konstruktorit
     public Category(){}
@@ -38,10 +43,10 @@ public class Category {
         this.name = name;
     }
 
-    public List<Book> getBooks(){
+    public Set<Book> getBooks(){
         return books;
     }
-    public void setBooks(List<Book> books){
+    public void setBooks(Set<Book> books){
         this.books = books;
     }
 }
